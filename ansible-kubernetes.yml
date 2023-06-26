@@ -11,11 +11,10 @@
     - name: start a container
       community.docker.docker_container:
         name: abc-dockercontainer
-        image: avirup21/abcnewimage:{{ lookup('env', 'BUILDNUM') }}
+        image: avirup21/abcnewimage:13
         state: started
         ports:
           - 2255:8080
-      register: container_out
 
     - name: Create a Deployment
       kubernetes.core.k8s:
@@ -38,13 +37,7 @@
               spec:
                 containers:
                 - name: my-container
-                  image: avirup21/abcnewimage:{{ lookup('env', 'BUILDNUM') }}
-                  ports:
-                  - containerPort: 80
-        namespace: "default"
-      register: deployment_out
-      vars:
-        build_number: "{{ lookup('env', 'BUILDNUM') }}"
+                  image: avirup21/abcnewimage:13
 
     - name: Create a Service
       kubernetes.core.k8s:
@@ -64,18 +57,3 @@
               port: 80
               targetPort: 8080
         namespace: "default"
-      register: service_out
-      vars:
-        build_number: "{{ lookup('env', 'BUILDNUM') }}"
-
-    - name: Debug Container Output
-      debug:
-        var: container_out
-
-    - name: Debug Deployment Output
-      debug:
-        var: deployment_out
-
-    - name: Debug Service Output
-      debug:
-        var: service_out
