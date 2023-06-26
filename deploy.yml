@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
        - name: app
-         image: avirup21/abcimage:6
+         image: avirup21/abcnewimage:10
         
 ---
 kind: Service
